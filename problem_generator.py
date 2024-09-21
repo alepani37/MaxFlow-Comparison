@@ -1,6 +1,4 @@
 import random
-import graphviz
-
 
 class Vertex:
     def __init__(self, i, w):
@@ -49,14 +47,28 @@ class DirectedGraph:
         return edges
 
 
-def generate_random_graph(num_vertices, max_weight, edge_probability):
+def generate_random_graph(num_vertices, num_edges, max_weight):
     graph = DirectedGraph(num_vertices)
 
-    for u in range(num_vertices):
-        for v in range(num_vertices):
-            if u != v:
-                if random.random() < edge_probability:  # probabilità di creare l'arco
-                    weight = random.randint(1, max_weight)
-                    graph.addEdge(u, v, weight)
+    edges_added = 0
+    possible_edges = [(u, v) for u in range(num_vertices) for v in range(num_vertices) if u != v]
+    random.shuffle(possible_edges)
+
+    for u, v in possible_edges:
+        if edges_added < num_edges:
+            weight = random.randint(1, max_weight)
+            graph.addEdge(u, v, weight)
+            edges_added += 1
+        else:
+            break
 
     return graph
+
+# Esempio di utilizzo'''
+'''num_vertices = 5
+num_edges = 7
+max_weight = 10
+
+graph = generate_random_graph(num_vertices, num_edges, max_weight)
+for edge in graph.getEdges():
+    print(edge)'''
