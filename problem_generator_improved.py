@@ -63,6 +63,7 @@ def generate_random_graph(num_vertices, num_edges, max_weight):
         else:
             break
 
+
     return graph
 
 # Esempio di utilizzo'''

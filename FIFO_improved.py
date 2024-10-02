@@ -43,12 +43,14 @@ class MaxFlow:
             self.push(u, e, h, queue, inQueue)
         return e[self.sink]
 
+
     def relabel(self, u, h):
         minHeight = float("inf")
         for v in self.residualGraph.adjacencyList[u]:
-            if v.w > 0:
+            if v.w > 0:  # Check if the residual capacity is positive
                 minHeight = min(minHeight, h[v.i])
-                h[u] = minHeight + 1
+        if minHeight < float("inf"):  # Only relabel if there was an adjacent vertex with capacity
+            h[u] = minHeight + 1
 
     def push(self, u, e, h, queue, in_queue):
         for v in self.residualGraph.adjacencyList[u]:

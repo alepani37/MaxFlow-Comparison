@@ -1,4 +1,4 @@
-from FIFO import MaxFlow
+from FIFO_improved import MaxFlow
 from problem_generator import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
@@ -12,8 +12,8 @@ wei = int(input("Insert the max capacity of the graph edges:"))
 
 
 graph = generate_random_graph(ver,edg,wei)
-for edge in graph.getEdges():
-    print(edge)
+# for edge in graph.getEdges():
+#     print(edge)
 
 while loop:
     choose = input("Press 1 to run FIFO preflow push algorithm\nPress 2 to run Shortest Augmenting Path algorithm.\n3 exit.\n")

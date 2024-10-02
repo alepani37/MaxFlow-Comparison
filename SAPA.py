@@ -14,6 +14,7 @@ class MaxFlowSAPA:
         i = self.source
 
         while d[self.source] < self.n:
+
             if self.has_admissible_arc(i, d):
                 i = self.advance(i, d, pred)
                 if i == self.sink:
@@ -21,7 +22,7 @@ class MaxFlowSAPA:
                     i = self.source
             else:
                 i = self.retreat(i, d, pred)
-
+        print("self.x" + str(self.x))
         return self.x
 
     def get_exact_distance_labels(self, s):
