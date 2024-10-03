@@ -5,6 +5,8 @@ import time
 from numpy import mean,std
 from res import build_residual_graph
 import csv
+import math
+
 
 def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
     source = 0
@@ -52,22 +54,22 @@ def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
     print(f"std time SAPA: {std_time_sapa}")
     print(f"max flow SAPA: {max_flow_list_sapa}")
 
-    # Define the column name and the ordered list of values
-    column_name = "Values"
-    ordered_values = []
+    data = [(ver, wei, edg, source,
+             sink, experiment_rep, mean_time_fifo, std_time_fifo,
+             max_flow_list_fifo, mean_time_sapa, std_time_sapa, max_flow_list_sapa)]
 
+    return data
+
+
+def write_csv(informazioni):
     # Definisci i nomi delle colonne e i valori ordinati
     column_names = ["nodes_number", "max_capacity", "num_edges", "source node",
                     "sink node", "experiments", "mean_time_fifo", "std_time_fifo",
                     "max_flow_list_fifo", "mean_time_sapa", "std_time_sapa",
                     "max_flow_list_sapa"]
 
-    data = [(ver, wei, edg, source,
-             sink, experiment_rep, mean_time_fifo, std_time_fifo,
-             max_flow_list_fifo, mean_time_sapa, std_time_sapa, max_flow_list_sapa)]
-
     # Specifica il nome del file CSV da creare
-    csv_file_name = "risultati_esperimenti_progettoV2.csv"
+    csv_file_name = "risultati_esperimenti_progettoV2.3.csv"
 
     # Scrivi l'intestazione solo se il file è vuoto
     try:
@@ -82,15 +84,25 @@ def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
         writer = csv.writer(file)
 
         # Scrivi i valori
-        writer.writerows(data)
+        writer.writerows(informazioni)
 
     print(f"CSV file '{csv_file_name}' created successfully.")
 
 
 
+flag_dati_pieni = True
 
 if __name__ == "__main__":
-    for vertici in [1000,2000,4000,8000,16000]:
-        for pesi in [100, 150, 200, 250, 300, 350, 400, 450, 500]:
-            algoritmo_lanciato_in_loop(vertici, vertici*2, pesi, 5)
+    for vertici in [16000]:
+        for pesi in [150, 200, 250, 300, 350, 400, 450, 500]:
+            flag_dati_pieni = True
+            while flag_dati_pieni == True:
+                dati = algoritmo_lanciato_in_loop(vertici, vertici*2, pesi, 5)
+                #se abbiamo dei dati diversi da zero per il max flow allora possiamo scriverli nel csv
+                #inoltre i due max flow devono corrispondere
+                if (math.prod(dati[0][8]) != 0 and math.prod(dati[0][11]) != 0
+                        and math.prod(dati[0][8]) == math.prod(dati[0][11])):
+                    write_csv(dati)
+                    flag_dati_pieni = False
+
             print(f"Eseguito test con {vertici} pesi {pesi}")
