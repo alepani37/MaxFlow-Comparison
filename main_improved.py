@@ -93,8 +93,8 @@ def write_csv(informazioni):
 flag_dati_pieni = True
 
 if __name__ == "__main__":
-    for vertici in [16000]:
-        for pesi in [150, 200, 250, 300, 350, 400, 450, 500]:
+    for vertici in [1000, 2000, 4000, 8000, 16000]:
+        for pesi in [100, 150, 200, 250, 300, 350, 400, 450, 500]:
             flag_dati_pieni = True
             while flag_dati_pieni == True:
                 dati = algoritmo_lanciato_in_loop(vertici, vertici*2, pesi, 5)
