@@ -69,7 +69,7 @@ def write_csv(informazioni):
                     "max_flow_list_sapa"]
 
     # Specifica il nome del file CSV da creare
-    csv_file_name = "risultati_esperimenti_progettoV2.3.csv"
+    csv_file_name = "risultati_esperimenti_progetto_4_times1.3.csv"
 
     # Scrivi l'intestazione solo se il file è vuoto
     try:
@@ -93,11 +93,11 @@ def write_csv(informazioni):
 flag_dati_pieni = True
 
 if __name__ == "__main__":
-    for vertici in [1000, 2000, 4000, 8000, 16000]:
-        for pesi in [100, 150, 200, 250, 300, 350, 400, 450, 500]:
+    for vertici in [16000]:
+        for pesi in [150, 200, 250, 300, 350, 400, 450, 500]:
             flag_dati_pieni = True
             while flag_dati_pieni == True:
-                dati = algoritmo_lanciato_in_loop(vertici, vertici*2, pesi, 5)
+                dati = algoritmo_lanciato_in_loop(vertici, vertici*4, pesi, 5)
                 #se abbiamo dei dati diversi da zero per il max flow allora possiamo scriverli nel csv
                 #inoltre i due max flow devono corrispondere
                 if (math.prod(dati[0][8]) != 0 and math.prod(dati[0][11]) != 0
