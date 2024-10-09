@@ -50,11 +50,12 @@ class MaxFlow:
         while queue:
             # vertex removed from
             # queue in constant time
+            print(e)
             u = queue.pop(0)
             inQueue[u] = False
             self.relabel(u, h)
             self.push(u, e, h, queue, inQueue)
-            print(e)
+
         return e[self.sink]
 
     def relabel(self, u, h):
@@ -78,8 +79,8 @@ class MaxFlow:
                 # flow possible
                 f = min(e[u], v.w)
 
-                v.w += f
-                self.residualGraph.getEdge(v.i, u).w -= f
+                v.w -= f
+                self.residualGraph.getEdge(v.i, u).w += f
 
                 e[u] -= f
                 e[v.i] += f
