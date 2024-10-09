@@ -4,6 +4,7 @@ class MaxFlow:
         self.graph = graph
         self.source = source
         self.sink = sink
+        self.d = [float("inf")] * self.graph.vertices
 
     def initResidualGraph(self):
         self.residualGraph = DirectedGraph(self.graph.vertices)
@@ -16,15 +17,27 @@ class MaxFlow:
                 if not self.residualGraph.hasEdge(v.i, u):
                     self.residualGraph.addEdge(v.i, u, 0)
 
+    def computeExactDistanceLabels(self):
+        """Calcola le etichette di distanza esatte dal sink."""
+        queue = [self.sink]
+        self.d[self.sink] = 0
+
+        while queue:
+            u = queue.pop(0)
+            for v in self.residualGraph.adjacencyList[u]:
+                if self.d[v.i] == float("inf") and self.residualGraph.getEdgeCapacity(v.i, u) > 0:
+                    self.d[v.i] = self.d[u] + 1
+                    queue.append(v.i)
+
     def FIFOPushRelabel(self):
         self.initResidualGraph()
         queue = []
         e = [0] * self.graph.vertices
         h = [0] * self.graph.vertices
+        #h = [self.d[i] for i in range(self.graph.vertices)]
         inQueue = [False] * self.graph.vertices
         h[self.source] = self.graph.vertices
         for v in self.graph.adjacencyList[self.source]:
-            print("v: " + str(v))
             self.residualGraph.getEdge(self.source, v.i).w = 0
             self.residualGraph.getEdge(v.i, self.source).w = v.w
             e[v.i] = v.w
@@ -41,6 +54,7 @@ class MaxFlow:
             inQueue[u] = False
             self.relabel(u, h)
             self.push(u, e, h, queue, inQueue)
+            print(e)
         return e[self.sink]
 
     def relabel(self, u, h):
@@ -64,8 +78,8 @@ class MaxFlow:
                 # flow possible
                 f = min(e[u], v.w)
 
-                v.w -= f
-                self.residualGraph.getEdge(v.i, u).w += f
+                v.w += f
+                self.residualGraph.getEdge(v.i, u).w -= f
 
                 e[u] -= f
                 e[v.i] += f

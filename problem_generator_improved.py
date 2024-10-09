@@ -31,6 +31,12 @@ class DirectedGraph:
                 return vertex
         return None
 
+    def getFlow(self, u, v):
+        for vertex in self.adjacencyList[u]:
+            if vertex.i == v:
+                return vertex.flow
+        return None
+
     def removeEdge(self, u, v):
         for j in self.adjacencyList[u]:
             if j.i == v:
