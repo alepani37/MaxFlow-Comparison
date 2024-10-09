@@ -1,8 +1,9 @@
-from FIFO_improved import MaxFlow
+from FIFO_preflow_push import MaxFlow
 from problem_generator_improved import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
 from numpy import mean,std
+from check_path import isReachable
 from res import build_residual_graph
 import csv
 import math
@@ -11,12 +12,15 @@ import math
 def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
     source = 0
     sink = ver - 1
-
+    flag = True
     # ver = int(input("Insert the number of nodes:"))
     # edg = float(input("Insert the number of edges:"))
     # wei = int(input("Insert the max capacity of the graph edges:"))
 
-    graph = generate_random_graph(ver,edg,wei)
+    while flag:
+        graph = generate_random_graph(ver,edg,wei)
+        if isReachable(graph,source,sink):
+            flag = False
     # for edge in graph.getEdges():
     #     print(edge)
 

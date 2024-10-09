@@ -4,7 +4,7 @@ from FIFO_preflow_push import MaxFlow
 import networkx as nx
 from networkx.algorithms.flow import preflow_push
 from SAPA import MaxFlowSAPA
-
+from check_path import isReachable
 
 
 
@@ -20,7 +20,7 @@ graph.addEdge(3,4,3)
 graph.addEdge(4,5,6)
 
 
-
+print(isReachable(graph,0,5))
 
 mfsapa = MaxFlowSAPA(graph,0,5)
 

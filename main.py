@@ -3,15 +3,20 @@ from problem_generator import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
 from numpy import mean,std
-from res import build_residual_graph
+from check_path import isReachable
 
 loop = True
 ver = int(input("Insert the number of nodes:"))
 edg = float(input("Insert the number of edges:"))
 wei = int(input("Insert the max capacity of the graph edges:"))
+source = 0
+sink = ver - 1
+flag = True
 
-
-graph = generate_random_graph(ver,edg,wei)
+while flag:
+    graph = generate_random_graph(ver,edg,wei)
+    if isReachable(graph,source,sink):
+        flag = False
 # for edge in graph.getEdges():
 #     print(edge)
 
@@ -24,8 +29,6 @@ while loop:
     time_rep = []
     max_flow_list = []
     if choose == "1":
-        source = int(input("Insert the source node:"))
-        sink = int(input("Insert the sink node:"))
         for i in range(experiment_rep):
             start = time.time()
             maxFlow = MaxFlow(graph, source, sink)
@@ -39,8 +42,6 @@ while loop:
         print(f"std time FIFO: {std_time}")
         print(f"max flow FIFO: {max_flow_list}")
     if choose == "2":
-        source = int(input("Insert the source node:"))
-        sink = int(input("Insert the sink node:"))
         for i in range(experiment_rep):
             start = time.time()
             maxFlow = MaxFlowSAPA(graph,source,sink)
