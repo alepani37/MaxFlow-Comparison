@@ -21,29 +21,32 @@ class MaxFlow:
                 if not self.residualGraph.hasEdge(v.i, u):
                     self.residualGraph.addEdge(v.i, u, 0)  # Arco inverso con capacità 0
 
-    def computeExactDistanceLabels(self):
-        """Calcola le etichette di distanza esatte dal sink."""
-        queue = [self.sink]
-        self.h[self.sink] = 0
+    def get_exact_distance_labels(self, sink):
+        d = [self.residualGraph.vertices] * self.residualGraph.vertices  # Inizializziamo le distanze al massimo possibile
+        d[sink] = 0  # La distanza dal sink a se stesso è 0
+        queue = [sink]  # Partiamo dal sink
 
         while queue:
-            u = queue.pop(0)
-            for v in self.residualGraph.adjacencyList[u]:
-                if self.h[v.i] == float("inf") and self.residualGraph.getEdgeCapacity(v.i, u) > 0:
-                    self.h[v.i] = self.h[u] + 1
-                    queue.append(v.i)
+            i = queue.pop(0)
+            for vertex in self.residualGraph.adjacencyList[i]:
+                j = vertex.i
+                if d[j] == self.residualGraph.vertices and self.residualGraph.getEdge(j,i).w > 0:  # Consideriamo solo gli archi con capacità residua positiva
+                    d[j] = d[i] + 1
+                    queue.append(j)
+        return d
 
     def preprocess(self):
         """Effettua il preprocessamento: inizializza le altezze e gli eccessi."""
 
-        self.computeExactDistanceLabels()
+        d = self.get_exact_distance_labels(self.sink)
+        self.h = [d[i] for i in range(self.graph.vertices)]
         self.h[self.source] = self.graph.vertices
         for v in self.graph.adjacencyList[self.source]:
             cap = self.residualGraph.getEdgeCapacity(self.source, v.i)
             self.residualGraph.getEdge(self.source,v.i).w = 0  # Imposta il flusso iniziale
-            self.residualGraph.getEdge(v.i,self.source).w += cap  # Arco inverso
+            self.residualGraph.getEdge(v.i,self.source).w = cap  # Arco inverso
             self.e[v.i] += cap
-            self.e[self.source] -= cap
+            self.e[self.source] = 0
 
     def push(self, u, v):
 
@@ -69,7 +72,7 @@ class MaxFlow:
         for v in self.residualGraph.adjacencyList[u]:
             if self.residualGraph.getEdgeCapacity(u, v.i) > 0 and self.h[u] == self.h[v.i] + 1:
                 self.push(u, v)
-                if self.e[v.i] > 0 and v.i not in self.queue and v.i != self.sink and v.i != self.source:
+                if self.e[v.i] > 0 and v.i not in self.queue and v.i != self.sink:
                     self.queue.append(v.i)  # Aggiunge v alla lista attiva se non è già presente
                 if self.e[u] == 0:  # Se non c'è più eccesso su u, esci dalla funzione
                     return
@@ -81,6 +84,7 @@ class MaxFlow:
 
     def FIFOPushRelabel(self):
         """Algoritmo Push-Relabel con approccio FIFO."""
+        print("esecuzione fifo")
 
         # Coda dei nodi attivi
         self.initResidualGraph()
@@ -91,7 +95,7 @@ class MaxFlow:
         for v in self.residualGraph.adjacencyList[self.source]:
             if self.e[v.i] > 0 and v.i != self.sink and v.i != self.source:
                 self.queue.append(v.i)
-
+        print(self.h)
         # Elaborazione della coda FIFO
         while self.queue:
             u = self.queue.pop(0)

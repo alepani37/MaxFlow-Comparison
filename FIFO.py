@@ -50,7 +50,6 @@ class MaxFlow:
         while queue:
             # vertex removed from
             # queue in constant time
-            print(e)
             u = queue.pop(0)
             inQueue[u] = False
             self.relabel(u, h)

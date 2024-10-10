@@ -1,5 +1,5 @@
-from FIFO_improved import MaxFlow
-from problem_generator import DirectedGraph,generate_random_graph
+from FIFO_preflow_push import MaxFlow
+from problem_generator_improved import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
 from numpy import mean,std
@@ -14,9 +14,10 @@ sink = ver - 1
 flag = True
 
 while flag:
-    graph = generate_random_graph(ver,edg,wei)
-    if isReachable(graph,source,sink):
-        flag = False
+    graph,error = generate_random_graph(ver,edg,wei)
+    if error:
+        if isReachable(graph,source,sink):
+            flag = False
 # for edge in graph.getEdges():
 #     print(edge)
 

@@ -9,6 +9,7 @@ class MaxFlowSAPA:
         self.x = [[0] * self.n for _ in range(self.n)]  # Matrice dei flussi iniziale
 
     def shortest_augmenting_path(self):
+        print("esecuzione sapa")
         d = self.get_exact_distance_labels(self.sink)  # Ottenere le etichette di distanza dal sink
         pred = [-1] * self.n  # Predecessori dei nodi nel cammino di aumentazione
         i = self.source

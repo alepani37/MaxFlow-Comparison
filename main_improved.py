@@ -1,4 +1,4 @@
-from FIFO_preflow_push import MaxFlow
+from FIFO import MaxFlow
 from problem_generator_improved import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
@@ -9,7 +9,11 @@ import csv
 import math
 
 
+
+
+
 def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
+    iter = 1
     source = 0
     sink = ver - 1
     flag = True
@@ -18,9 +22,11 @@ def algoritmo_lanciato_in_loop(ver, edg, wei, experiment_rep):
     # wei = int(input("Insert the max capacity of the graph edges:"))
 
     while flag:
-        graph = generate_random_graph(ver,edg,wei)
-        if isReachable(graph,source,sink):
-            flag = False
+        graph,no_error = generate_random_graph(ver,edg,wei)
+        if no_error:
+            if isReachable(graph,source,sink):
+                flag = False
+        iter = iter + 1
     # for edge in graph.getEdges():
     #     print(edge)
 
@@ -73,7 +79,7 @@ def write_csv(informazioni):
                     "max_flow_list_sapa"]
 
     # Specifica il nome del file CSV da creare
-    csv_file_name = "risultati_esperimenti_progetto_variazione edge.csv"
+    csv_file_name = "risultati_esperimenti_progetto_variazione_edge_2.csv"
 
     # Scrivi l'intestazione solo se il file è vuoto
     try:

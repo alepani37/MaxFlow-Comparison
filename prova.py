@@ -1,46 +1,54 @@
 
-from problem_generator_improved import DirectedGraph
+from problem_generator_improved import DirectedGraph,generate_random_graph
 from FIFO_preflow_push import MaxFlow
 import networkx as nx
-from networkx.algorithms.flow import preflow_push
+from networkx.algorithms.flow import shortest_augmenting_path
 from SAPA import MaxFlowSAPA
 from check_path import isReachable
+from tqdm import tqdm
 
 
+same = 0
+diff = 0
+n = 5
+u = 10
+m = 8
+flag = True
 
-graph = DirectedGraph(6)
-graph.addEdge(0,1,3)
-graph.addEdge(0,2,7)
-graph.addEdge(1,3,3)
-graph.addEdge(1,4,4)
-graph.addEdge(2,1,5)
-graph.addEdge(2,4,3)
-graph.addEdge(3,5,2)
-graph.addEdge(3,4,3)
-graph.addEdge(4,5,6)
+for i in tqdm(range(100)):
+    while flag:
+        grafo_mio,_ = generate_random_graph(n,m,u)
+        if isReachable(grafo_mio,0,n-1):
+            flag = False
+        else:
+            del grafo_mio
 
+    for edge in grafo_mio.getEdges():
+        print(edge)
+    pref_push = MaxFlow(grafo_mio, 0, n - 1)
+    mf_fifo = pref_push.FIFOPushRelabel()
 
-print(isReachable(graph,0,5))
+    '''
+    mf_mio = MaxFlowSAPA(grafo_mio,0,n-1)
+    mf_mio_value_list = mf_mio.shortest_augmenting_path()
+    mf_mio_value = sum(mf_mio_value_list[0])
+    
+    
+    mf_nx = nx.maximum_flow(grafo_netw,0,n-1,flow_func=shortest_augmenting_path)
+    flow_nx = mf_nx[0]
+    
 
-mfsapa = MaxFlowSAPA(graph,0,5)
+    if mf_mio_value == mf_fifo:
+        same = same + 1
+    else:
+        diff = diff + 1
+    '''
+   # print(f"flow sapa iter{i+1}: {mf_mio_value}")
+    #print(f"flow altro iter{i + 1}: {flow_nx}")
+    print(f"flow fifo iter{i+1}: {mf_fifo}")
 
-flow = mfsapa.shortest_augmenting_path()
-print(sum(flow[0]))
+    del grafo_mio
+    flag = True
 
+print(f"same:{same}, diff: {diff} ")
 
-mf = MaxFlow(graph,0,5)
-print(mf.FIFOPushRelabel())
-
-G = nx.DiGraph()
-G.add_edge(0,1,capacity = 3)
-G.add_edge(0,2,capacity =7)
-G.add_edge(1,3,capacity =3)
-G.add_edge(1,4,capacity =4)
-G.add_edge(2,1,capacity =5)
-G.add_edge(2,4,capacity =3)
-G.add_edge(3,5,capacity =2)
-G.add_edge(3,4,capacity =3)
-G.add_edge(4,5,capacity =6)
-
-nxfv,fd = nx.maximum_flow(G,0,5,flow_func=preflow_push)
-print(nxfv)
