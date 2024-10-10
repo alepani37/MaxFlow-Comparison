@@ -31,7 +31,7 @@ class MaxFlow:
             i = queue.pop(0)
             for vertex in self.residualGraph.adjacencyList[i]:
                 j = vertex.i
-                if self.d[j] == self.residualGraph.vertices and self.residualGraph.getEdge(j,i).w > 0:  # Consideriamo solo gli archi con capacità residua positiva
+                if self.d[j] == self.residualGraph.vertices:  # Consideriamo solo gli archi con capacità residua positiva
                     self.d[j] = self.d[i] + 1
                     queue.append(j)
 
@@ -80,7 +80,10 @@ class MaxFlow:
                     return
                 else:
                     self.queue.append(u)
+
         # Se non ci sono archi ammissibili, esegui il relabel
+        if u not in self.queue:
+            self.queue.append(u)
         self.relabel(u)
 
 

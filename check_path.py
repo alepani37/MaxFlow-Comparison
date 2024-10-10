@@ -17,4 +17,5 @@ def isReachable(graph,s,t):
             if visited[i.i] == False:
                 visited[i.i] = True
                 queue.append(i.i)
+    print("no path")
     return False

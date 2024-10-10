@@ -79,7 +79,7 @@ def write_csv(informazioni):
                     "max_flow_list_sapa"]
 
     # Specifica il nome del file CSV da creare
-    csv_file_name = "risultati_esperimenti_progetto_variazione_edge_3.csv"
+    csv_file_name = "risultati_esperimenti_progetto_variazione_edge_4.csv"
 
     # Scrivi l'intestazione solo se il file è vuoto
     try:
@@ -103,7 +103,7 @@ def write_csv(informazioni):
 flag_dati_pieni = True
 
 if __name__ == "__main__":
-    for edge in [500,1000,2000,4000,8000,16000]:
+    for edge in [16000]:
         flag_dati_pieni = True
         while flag_dati_pieni == True:
             dati = algoritmo_lanciato_in_loop(500, edge, 250, 5)

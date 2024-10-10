@@ -15,7 +15,7 @@ u = 10
 m = 8
 flag = True
 
-for i in tqdm(range(100)):
+for i in tqdm(range(100000)):
     while flag:
         grafo_mio,_ = generate_random_graph(n,m,u)
         if isReachable(grafo_mio,0,n-1):
