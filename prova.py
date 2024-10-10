@@ -23,30 +23,26 @@ for i in tqdm(range(100)):
         else:
             del grafo_mio
 
-    for edge in grafo_mio.getEdges():
-        print(edge)
     pref_push = MaxFlow(grafo_mio, 0, n - 1)
     mf_fifo = pref_push.FIFOPushRelabel()
 
-    '''
+
     mf_mio = MaxFlowSAPA(grafo_mio,0,n-1)
     mf_mio_value_list = mf_mio.shortest_augmenting_path()
     mf_mio_value = sum(mf_mio_value_list[0])
     
-    
-    mf_nx = nx.maximum_flow(grafo_netw,0,n-1,flow_func=shortest_augmenting_path)
-    flow_nx = mf_nx[0]
+
     
 
     if mf_mio_value == mf_fifo:
         same = same + 1
     else:
         diff = diff + 1
-    '''
-   # print(f"flow sapa iter{i+1}: {mf_mio_value}")
-    #print(f"flow altro iter{i + 1}: {flow_nx}")
-    print(f"flow fifo iter{i+1}: {mf_fifo}")
-
+        print(f"flow sapa iter{i+1}: {mf_mio_value}")
+        print(f"flow fifo iter{i+1}: {mf_fifo}")
+        for edge in grafo_mio.getEdges():
+            print(edge)
+        print(pref_push.d)
     del grafo_mio
     flag = True
 

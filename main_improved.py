@@ -1,4 +1,4 @@
-from FIFO import MaxFlow
+from FIFO_preflow_push import MaxFlow
 from problem_generator_improved import DirectedGraph,generate_random_graph
 from SAPA import MaxFlowSAPA
 import time
@@ -79,7 +79,7 @@ def write_csv(informazioni):
                     "max_flow_list_sapa"]
 
     # Specifica il nome del file CSV da creare
-    csv_file_name = "risultati_esperimenti_progetto_variazione_edge_2.csv"
+    csv_file_name = "risultati_esperimenti_progetto_variazione_edge_3.csv"
 
     # Scrivi l'intestazione solo se il file è vuoto
     try:
