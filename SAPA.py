@@ -33,7 +33,7 @@ class MaxFlowSAPA:
             i = queue.pop(0)
             for vertex in self.graph.adjacencyList[i]:
                 j = vertex.i
-                if d[j] == self.n:  # Consideriamo solo gli archi con capacità residua positiva
+                if d[j] == self.n and self.graph.getEdge(j,i).w > 0:  # Consideriamo solo gli archi con capacità residua positiva
                     d[j] = d[i] + 1
                     queue.append(j)
         return d
